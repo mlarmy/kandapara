@@ -7,7 +7,7 @@
     <meta name="description" content="Kandapara Humanity Foundation - A non-profit organization dedicated to humanitarian causes in Bangladesh.">
     <meta name="keywords" content="Kandapara Humanity Foundation, charity, non-profit, humanitarian, social work, Bangladesh">
     <meta name="author" content="Kandapara Humanity Foundation">
-    <link rel="icon" href="/images/logo_png.png" type="image/x-icon">
+    <link rel="icon" href="/logo_png.png" type="image/x-icon">
     
     <title>Kandapara Humanity Foundation - Add New Member</title>
 
@@ -48,6 +48,11 @@
         .btn-primary:hover {
             background-color: #14567A;
         }
+        .founder-section {
+        background-color: #f5f5f5;
+        padding: 40px 0;
+    }
+
     </style>
 </head>
 
@@ -56,8 +61,8 @@
     <div class="container">
         <div class="form-container">
             <h2>নিবন্ধন</h2>
-            <form>
-                <!-- Name -->
+            <form id="registrationForm">
+                <!-- Full Name -->
                 <div class="mb-3">
                     <label for="name" class="form-label">Full Name</label>
                     <input type="text" class="form-control" id="name" placeholder="আপনার পুরো নাম লিখুন" required>
@@ -65,11 +70,11 @@
 
                 <!-- Email -->
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" placeholder="আপনার ইমেল লিখুন (ঐচ্ছিক)">
+                    <label for="email" class="form-label">Email Address (Optional)</label>
+                    <input type="email" class="form-control" id="email" placeholder="আপনার ইমেল লিখুন">
                 </div>
 
-                <!-- Blood group -->
+                <!-- Blood Group -->
                 <div class="mb-3">
                     <label for="bloodGroup" class="form-label">Blood Group</label>
                     <select class="form-select" id="bloodGroup" required>
@@ -109,6 +114,12 @@
                     </select>
                 </div>
 
+                <!-- Profile Picture -->
+                <div class="mb-3">
+                    <label for="profilePic" class="form-label">আপনার ছবি চয়ন করুন</label>
+                    <input type="file" class="form-control" id="profilePic" accept="image/*" required>
+                </div>
+
                 <!-- Submit Button -->
                 <div class="text-center">
                     <button type="submit" class="btn btn-primary w-100">Register</button>
@@ -117,16 +128,14 @@
         </div>
     </div>
 
-    <!-- Bootstrap JS -->
+    <!-- Firebase and Form Handling Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-
-
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
         import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
-        import { getAnalytics } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-analytics.js";
-    
-        // Your web app's Firebase configuration
+        import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
+
+        // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDBoc56Cwi1nHhYUFiueKIjkRx4q2z4s6o",
             authDomain: "k-h-f-eeeab.firebaseapp.com",
@@ -136,15 +145,16 @@
             appId: "1:150200923957:web:5261d46e05fcf3f65cbe7c",
             measurementId: "G-6S8TQH2E7Z"
         };
-    
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
-    
+        const storage = getStorage(app);
+
         // Handle form submission
-        document.querySelector('form').addEventListener('submit', function(event) {
-            event.preventDefault(); // Prevent form from submitting the default way
-    
+        document.querySelector('#registrationForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+
             // Get form values
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
@@ -152,25 +162,43 @@
             const phone = document.getElementById('phone').value;
             const address = document.getElementById('address').value;
             const designation = document.getElementById('designation').value;
-    
-            // Save data to Firebase using phone number as the key
-            set(ref(database, 'members/' + phone), {
-                name: name,
-                email: email,
-                bloodGroup: bloodGroup,
-                phone: phone,
-                address: address,
-                designation: designation
-            }).then(() => {
-                alert('Information saved!');
-                // Optionally, reset the form here
-                document.querySelector('form').reset();
-            }).catch((error) => {
-                console.error('Error saving data:', error);
-                alert('Failed to save data.');
-            });
+            const profilePic = document.getElementById('profilePic').files[0];
+
+            if (profilePic) {
+                // Create a storage reference and upload the profile picture
+                const profilePicRef = storageRef(storage, 'pictures/' + phone);
+                try {
+                    const snapshot = await uploadBytes(profilePicRef, profilePic);
+                    const profilePicUrl = await getDownloadURL(profilePicRef);
+
+                    // Save user data including profile picture URL
+                    set(ref(database, 'members/' + phone), {
+                        name: name,
+                        email: email,
+                        bloodGroup: bloodGroup,
+                        phone: phone,
+                        address: address,
+                        designation: designation,
+                        profilePicUrl: profilePicUrl
+                    }).then(() => {
+                        alert('Registration successful!');
+                        // Optionally, reset the form
+                        document.querySelector('#registrationForm').reset();
+                    }).catch((error) => {
+                        console.error('Error saving data:', error);
+                        alert('Failed to register.');
+                    });
+
+                } catch (error) {
+                    console.error('Error uploading profile picture:', error);
+                    alert('Failed to upload profile picture.');
+                }
+            } else {
+                alert('Please upload a profile picture.');
+            }
         });
-    </script>        
+    </script>
+
 </body>
 
 </html>
