@@ -115,8 +115,21 @@
             font-size: 1rem;
             color: #E87A31;
         }
+        .card_container {
+            margin-top: 50px;
+            width: 100%;
+            height: auto;
+            padding: 0px 25vw;
+        }
 
-            /* Responsive text size adjustments */
+
+        /* Responsive text size adjustments */
+        @media (max-width: 750px) {
+            .card_container {
+                padding: 0px 10vw;
+            }
+        }
+
         @media (max-width: 576px) {
             .container .founder-img {
                 width: 80px; /* Smaller size for very small screens */
@@ -181,7 +194,13 @@
                         <a class="nav-link" href="#our_team">আমাদের দল</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" target="_blank" href="member_info.html">নিবন্ধন করুন</a>
+                        <a id="money_managment" class="nav-link">অর্থ ব্যবস্থাপনা</a>
+                    </li>
+                    <li class="nav-item">
+                        <a id="money_managment" class="nav-link" href="mony_details.html">অর্থ তালিকা</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="member_info.html">নিবন্ধন করুন</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://www.facebook.com/profile.php?id=61565378521604&mibextid=ZbWKwL">যোগাযোগ</a>
@@ -190,6 +209,18 @@
             </div>
         </div>
     </nav>
+
+    <!-- Cards -->
+     <div class="card_container">
+        <div id="card1" class="card mb-3">
+            <img src="banner-of-social-charity-activity-nature-cleaning.jpg" class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title">একসাথে এগিয়ে যাওয়ার গল্প</h5>
+              <p class="card-text">আপনার প্রতিটি পদক্ষেপ এই পৃথিবীকে আরও সুন্দর ও মানবিক করে তোলে। একসাথে আমরা সমাজের উন্নয়নে গুরুত্বপূর্ণ ভূমিকা পালন করতে পারি। আপনার অবদান সমাজের প্রতিটি মানুষের জীবনে আলোকিত প্রভাব ফেলবে। আমরা বিশ্বাস করি, আপনার প্রত্যেকটা কাজ পরিবর্তনের নতুন দুয়ার খুলে দিতে পারে। একসাথে চলি, সমৃদ্ধ ভবিষ্যতের পথে।</p>
+              <p class="card-text"><small class="text-body-secondary">Last updated 9/13/2024</small></p>
+            </div>
+        </div>
+     </div>
 
     <!-- About Us Section -->
     <section id="about" class="container mt-5">
@@ -229,27 +260,27 @@
                 <tbody>
                     <tr>
                         <td>আল-আমীন</td>
-                        <td></td>
+                        <td>none</td>
                         <td>সভাপতি</td>
                     </tr>
                     <tr>
                         <td>সজীব হোসেন</td>
-                        <td></td>
+                        <td>none</td>
                         <td>সহ-সভাপতি</td>
                     </tr>
                     <tr>
                         <td>রানা চৌধুরী</td>
-                        <td></td>
+                        <td>none</td>
                         <td>সহ-সভাপতি</td>
                     </tr>
                     <tr>
                         <td>সজীব মিয়া</td>
-                        <td></td>
+                        <td>none</td>
                         <td>সহ-সভাপতি</td>
                     </tr>
                     <tr>
-                        <td>আলমগীর হোসেন</td>
-                        <td></td>
+                        <td>none</td>
+                        <td>none</td>
                         <td>সাধারন সম্পাদক</td>
                     </tr>
                     <tr>
@@ -258,7 +289,7 @@
                         <td>সহ-সাধারন সম্পাদক</td>
                     </tr>
                     <tr>
-                        <td>সুমন হোসেন</td>
+                        <td>সুমন হুজুর</td>
                         <td>০১৬৪৭৬১৬৬০৭</td>
                         <td>সাংগাঠনিক সম্পাদক</td>
                     </tr>
@@ -279,12 +310,12 @@
                     </tr>
                     <tr>
                         <td>আশিকুর রহমান (আশিক)</td>
-                        <td></td>
+                        <td>none</td>
                         <td>সাংস্কৃতিক সম্পাদক</td>
                     </tr>
                     <tr>
                         <td>বাবু সওদাগর</td>
-                        <td></td>
+                        <td>none</td>
                         <td>সহ-সাংস্কৃতিব সম্পাদক</td>
                     </tr>
                     <tr>
@@ -314,6 +345,58 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-</body>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+        import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBoc56Cwi1nHhYUFiueKIjkRx4q2z4s6o",
+            authDomain: "k-h-f-eeeab.firebaseapp.com",
+            projectId: "k-h-f-eeeab",
+            storageBucket: "k-h-f-eeeab.appspot.com",
+            messagingSenderId: "150200923957",
+            appId: "1:150200923957:web:5261d46e05fcf3f65cbe7c",
+            measurementId: "G-6S8TQH2E7Z"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getDatabase(app);
+
+        const money_managment = document.getElementById("money_managment");
+        money_managment.addEventListener("click", () => {
+            // Prompt for password
+            const userPassword = prompt("Enter password:");
+
+            // Check password
+            async function checkPassword() {
+                const passwordRef = ref(db, 'mony_management_password'); // Update the path as per your database structure
+
+                try {
+                    const snapshot = await get(passwordRef);
+                    if (snapshot.exists()) {
+                        const storedPassword = snapshot.val();
+                        if (userPassword === storedPassword) {
+                            // Redirect if password is correct
+                            window.location.href = 'mony_management.html';
+                        } else {
+                            // Show error if password is incorrect
+                            alert('Invalid password');
+                        }
+                    } else {
+                        console.error('No password found in the database.');
+                    }
+                } catch (error) {
+                    console.error('Error getting password:', error);
+                }
+            }
+
+            // Perform password check
+            if (userPassword !== null) {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
 </html>
