@@ -9,7 +9,7 @@
     <meta name="author" content="Kandapara Humanity Foundation">
     <link rel="icon" href="logo_png.png" type="image/x-icon">
     
-    <title>Kandapara Humanity Foundation - Add New Member</title>
+    <title>Kandapara Humanity Foundation - Member Management</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -48,11 +48,11 @@
         .btn-primary:hover {
             background-color: #14567A;
         }
-        .founder-section {
-        background-color: #f5f5f5;
-        padding: 40px 0;
-    }
 
+        .founder-section {
+            background-color: #f5f5f5;
+            padding: 40px 0;
+        }
     </style>
 </head>
 
@@ -60,7 +60,7 @@
 
     <div class="container">
         <div class="form-container">
-            <h2>নিবন্ধন</h2>
+            <h2>Register New Member</h2>
             <form id="registrationForm">
                 <!-- Full Name -->
                 <div class="mb-3">
@@ -126,15 +126,80 @@
                 </div>
             </form>
         </div>
+
+        <!-- Update Section -->
+        <div class="form-container mt-5">
+            <h2>Update Member Information</h2>
+            <form id="updateForm">
+                <!-- Phone Number to Identify Member -->
+                <div class="mb-3">
+                    <label for="updatePhone" class="form-label">Enter Mobile Number to Update</label>
+                    <input type="tel" class="form-control" id="updatePhone" placeholder="Enter Mobile Number" required>
+                </div>
+
+                <!-- Updated Information -->
+                <div class="mb-3">
+                    <label for="updateName" class="form-label">Full Name</label>
+                    <input type="text" class="form-control" id="updateName" placeholder="আপনার নতুন নাম লিখুন">
+                </div>
+
+                <div class="mb-3">
+                    <label for="updateEmail" class="form-label">Email Address</label>
+                    <input type="email" class="form-control" id="updateEmail" placeholder="আপনার নতুন ইমেল লিখুন">
+                </div>
+
+                <div class="mb-3">
+                    <label for="updateBloodGroup" class="form-label">Blood Group</label>
+                    <select class="form-select" id="updateBloodGroup">
+                        <option value="" disabled selected>আপনার নতুন রক্তের গ্রুপ নির্বাচন করুন</option>
+                        <option value="A+">A+</option>
+                        <option value="A-">A-</option>
+                        <option value="B+">B+</option>
+                        <option value="B-">B-</option>
+                        <option value="AB+">AB+</option>
+                        <option value="AB-">AB-</option>
+                        <option value="O+">O+</option>
+                        <option value="O-">O-</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label for="updateAddress" class="form-label">Address</label>
+                    <input type="text" class="form-control" id="updateAddress" placeholder="আপনার নতুন ঠিকানা লিখুন">
+                </div>
+
+                <div class="mb-3">
+                    <label for="updateDesignation" class="form-label">Designation</label>
+                    <select class="form-select" id="updateDesignation">
+                        <option value="" disabled selected>আপনার নতুন পদবী চয়ন করুন</option>
+                        <option value="উপদেষ্টা">উপদেষ্টা</option>
+                        <option value="কার্যক্রম সদস্য">কার্যক্রম সদস্য</option>
+                        <option value="কার্যক্রম পরিচালনাকারী">কার্যক্রম পরিচালনাকারী</option>
+                        <option value="সাধারণ সদস্য">সাধারণ সদস্য</option>
+                    </select>
+                </div>
+
+                <!-- Update Profile Picture -->
+                <div class="mb-3">
+                    <label for="updateProfilePic" class="form-label">আপনার নতুন ছবি চয়ন করুন</label>
+                    <input type="file" class="form-control" id="updateProfilePic" accept="image/*">
+                </div>
+
+                <!-- Update Button -->
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary w-100">Update</button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Firebase and Form Handling Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+        import { getDatabase, ref, set, update, remove, get } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
         import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
-
+    
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDBoc56Cwi1nHhYUFiueKIjkRx4q2z4s6o",
@@ -145,16 +210,16 @@
             appId: "1:150200923957:web:5261d46e05fcf3f65cbe7c",
             measurementId: "G-6S8TQH2E7Z"
         };
-
+    
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         const storage = getStorage(app);
-
-        // Handle form submission
+    
+        // Handle registration form submission
         document.querySelector('#registrationForm').addEventListener('submit', async function (event) {
             event.preventDefault(); // Prevent the default form submission
-
+    
             // Get form values
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
@@ -163,14 +228,14 @@
             const address = document.getElementById('address').value;
             const designation = document.getElementById('designation').value;
             const profilePic = document.getElementById('profilePic').files[0];
-
+    
             if (profilePic) {
                 // Create a storage reference and upload the profile picture
                 const profilePicRef = storageRef(storage, 'pictures/' + phone);
                 try {
                     const snapshot = await uploadBytes(profilePicRef, profilePic);
                     const profilePicUrl = await getDownloadURL(profilePicRef);
-
+    
                     // Save user data including profile picture URL
                     set(ref(database, 'members/' + phone), {
                         name: name,
@@ -182,22 +247,95 @@
                         profilePicUrl: profilePicUrl
                     }).then(() => {
                         alert('Registration successful!');
-                        // Optionally, reset the form
                         document.querySelector('#registrationForm').reset();
                     }).catch((error) => {
                         console.error('Error saving data:', error);
                         alert('Failed to register.');
                     });
-
+    
                 } catch (error) {
                     console.error('Error uploading profile picture:', error);
                     alert('Failed to upload profile picture.');
                 }
             } else {
-                alert('Please upload a profile picture.');
+                // Save user data without profile picture URL
+                set(ref(database, 'members/' + phone), {
+                    name: name,
+                    email: email,
+                    bloodGroup: bloodGroup,
+                    phone: phone,
+                    address: address,
+                    designation: designation
+                }).then(() => {
+                    alert('Registration successful!');
+                    document.querySelector('#registrationForm').reset();
+                }).catch((error) => {
+                    console.error('Error saving data:', error);
+                    alert('Failed to register.');
+                });
             }
         });
-    </script>
+    
+        // Handle update form submission
+        document.querySelector('#updateForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            // Get form values
+            const phone = document.getElementById('updatePhone').value;
+            const name = document.getElementById('updateName').value;
+            const email = document.getElementById('updateEmail').value;
+            const bloodGroup = document.getElementById('updateBloodGroup').value;
+            const address = document.getElementById('updateAddress').value;
+            const designation = document.getElementById('updateDesignation').value;
+            const profilePic = document.getElementById('updateProfilePic').files[0];
+    
+            // Retrieve current data
+            const memberRef = ref(database, 'members/' + phone);
+            const snapshot = await get(memberRef);
+    
+            if (snapshot.exists()) {
+                const currentData = snapshot.val();
+    
+                // If a new profile picture is uploaded
+                if (profilePic) {
+                    // Upload new profile picture
+                    const profilePicRef = storageRef(storage, 'pictures/' + phone);
+                    try {
+                        const snapshot = await uploadBytes(profilePicRef, profilePic);
+                        const profilePicUrl = await getDownloadURL(profilePicRef);
+    
+                        // Update user data including profile picture URL
+                        await update(memberRef, {
+                            name: name || currentData.name,
+                            email: email || currentData.email,
+                            bloodGroup: bloodGroup || currentData.bloodGroup,
+                            address: address || currentData.address,
+                            designation: designation || currentData.designation,
+                            profilePicUrl: profilePicUrl
+                        });
+    
+                        alert('Member updated successfully!');
+                    } catch (error) {
+                        console.error('Error uploading profile picture:', error);
+                        alert('Failed to upload profile picture.');
+                    }
+                } else {
+                    // Update user data without changing profile picture
+                    await update(memberRef, {
+                        name: name || currentData.name,
+                        email: email || currentData.email,
+                        bloodGroup: bloodGroup || currentData.bloodGroup,
+                        address: address || currentData.address,
+                        designation: designation || currentData.designation
+                    });
+    
+                    alert('Member updated successfully!');
+                }
+            } else {
+                alert('Member not found.');
+            }
+        });
+    </script>    
 
 </body>
 
