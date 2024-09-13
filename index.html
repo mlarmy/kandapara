@@ -193,14 +193,14 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#our_team">আমাদের দল</a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item" style="cursor: pointer;">
                         <a id="money_managment" class="nav-link">অর্থ ব্যবস্থাপনা</a>
                     </li>
                     <li class="nav-item">
-                        <a id="money_managment" class="nav-link" href="mony_details.html">অর্থ তালিকা</a>
+                        <a id="mony_management_list" class="nav-link">অর্থ তালিকা</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="member_info.html">নিবন্ধন করুন</a>
+                        <a class="nav-link" href="add_member.html">নিবন্ধন করুন</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="https://www.facebook.com/profile.php?id=61565378521604&mibextid=ZbWKwL">যোগাযোগ</a>
@@ -236,7 +236,7 @@
                         <div class="founder-image-container mb-3">
                             <img src="founder of humanity.jpg" alt="Founder Picture" class="founder-img img-fluid rounded-circle">
                         </div>
-                        <h3 class="mt-3 founder-title">সোজুন মিয়া</h3> <!-- Founder Name -->
+                        <h3 class="mt-3 founder-title">সুজন মিয়া</h3> <!-- Founder Name -->
                         <p class="mb-0 founder-title">প্রতিষ্ঠাতা</p>
                     </div>
                 </div>
@@ -264,7 +264,7 @@
                         <td>সভাপতি</td>
                     </tr>
                     <tr>
-                        <td>সজীব হোসেন</td>
+                        <td>সজীব খান</td>
                         <td>none</td>
                         <td>সহ-সভাপতি</td>
                     </tr>
@@ -279,9 +279,9 @@
                         <td>সহ-সভাপতি</td>
                     </tr>
                     <tr>
+                        <td>আলমগীর হোসেন</td>
                         <td>none</td>
-                        <td>none</td>
-                        <td>সাধারন সম্পাদক</td>
+                        <td>সহ-সভাপতি</td>
                     </tr>
                     <tr>
                         <td>মাসুদ-উজ-জামান</td>
@@ -289,7 +289,7 @@
                         <td>সহ-সাধারন সম্পাদক</td>
                     </tr>
                     <tr>
-                        <td>সুমন হুজুর</td>
+                        <td>মো: সুমন হোসেন রবিউল</td>
                         <td>০১৬৪৭৬১৬৬০৭</td>
                         <td>সাংগাঠনিক সম্পাদক</td>
                     </tr>
@@ -299,7 +299,7 @@
                         <td>সহ-সাংগাঠনিক সম্পাদক</td>
                     </tr>
                     <tr>
-                        <td>শাকিল হোসেন (আগুন)</td>
+                        <td>শাকিল আহম্মেদ (আগুন)</td>
                         <td>০১৬৪৪৯৭৮২৬০</td>
                         <td>প্রচার সম্পাদক</td>
                     </tr>
@@ -329,7 +329,7 @@
                         <td>সহ-কোষাদক্ষ্য</td>
                     </tr>
                 </tbody>
-            </table>
+            </table>            
         </section>
     </main>
 
@@ -364,6 +364,7 @@
         const app = initializeApp(firebaseConfig);
         const db = getDatabase(app);
 
+        // Open mony management system
         const money_managment = document.getElementById("money_managment");
         money_managment.addEventListener("click", () => {
             // Prompt for password
@@ -394,6 +395,40 @@
 
             // Perform password check
             if (userPassword !== null) {
+                checkPassword();
+            }
+        });
+
+        // Open mony management list system
+        const mony_management_list = document.getElementById("mony_management_list");
+        mony_management_list.addEventListener("click", () => {
+            // Prompt for password
+            const userPassword_list = prompt("Enter password:");
+                        // Check password
+                        async function checkPassword() {
+                const passwordRef = ref(db, 'mony_management_password'); // Update the path as per your database structure
+
+                try {
+                    const snapshot = await get(passwordRef);
+                    if (snapshot.exists()) {
+                        const storedPassword = snapshot.val();
+                        if (userPassword_list === storedPassword) {
+                            // Redirect if password is correct
+                            window.location.href = 'mony_details.html';
+                        } else {
+                            // Show error if password is incorrect
+                            alert('Invalid password');
+                        }
+                    } else {
+                        console.error('No password found in the database.');
+                    }
+                } catch (error) {
+                    console.error('Error getting password:', error);
+                }
+            }
+
+            // Perform password check
+            if (userPassword_list !== null) {
                 checkPassword();
             }
         });
