@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kandapara Humanity Foundation - Money Management List">
+    <meta name="keywords" content="Kandapara Humanity Foundation, charity, donation, non-profit, money management">
+    <meta name="author" content="Kandapara Humanity Foundation">
+    <link rel="icon" href="logo_png.png" type="image/x-icon">
+
+    <title>KHF Money Management - List</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        .container {
+            margin-top: 50px;
+        }
+
+        h1, h2 {
+            text-align: center;
+            color: #0056b3;
+            margin-bottom: 30px;
+        }
+
+        .list-container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            text-align: center;
+        }
+
+        .table-container {
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Money Management List</h2>
+
+        <div class="list-container">
+            <h3>Donations</h3>
+            <div class="table-container">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Donor Name</th>
+                            <th>Donation Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="donationsTableBody">
+                        <!-- Donations will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+
+            <h3>Investments</h3>
+            <div class="table-container">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Reason for Investment</th>
+                            <th>Investment Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="investmentsTableBody">
+                        <!-- Investments will be populated here -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase and Data Fetching Script -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBoc56Cwi1nHhYUFiueKIjkRx4q2z4s6o",
+            authDomain: "k-h-f-eeeab.firebaseapp.com",
+            projectId: "k-h-f-eeeab",
+            storageBucket: "k-h-f-eeeab.appspot.com",
+            messagingSenderId: "150200923957",
+            appId: "1:150200923957:web:5261d46e05fcf3f65cbe7c",
+            measurementId: "G-6S8TQH2E7Z"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        const donationsTableBody = document.getElementById('donationsTableBody');
+        const investmentsTableBody = document.getElementById('investmentsTableBody');
+
+        // Fetch donations and investments data
+        function fetchData() {
+            const dbRef = ref(database);
+
+            // Fetch donations
+            get(child(dbRef, 'donations')).then((snapshot) => {
+                if (snapshot.exists()) {
+                    snapshot.forEach(childSnapshot => {
+                        const data = childSnapshot.val();
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${data.donorName}</td>
+                            <td>${data.donationAmount}</td>
+                            <td>${new Date(parseInt(childSnapshot.key)).toLocaleDateString()}</td>
+                        `;
+                        donationsTableBody.appendChild(row);
+                    });
+                }
+            });
+
+            // Fetch investments
+            get(child(dbRef, 'investments')).then((snapshot) => {
+                if (snapshot.exists()) {
+                    snapshot.forEach(childSnapshot => {
+                        const data = childSnapshot.val();
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${data.investmentReason}</td>
+                            <td>${data.investmentAmount}</td>
+                            <td>${new Date(parseInt(childSnapshot.key)).toLocaleDateString()}</td>
+                        `;
+                        investmentsTableBody.appendChild(row);
+                    });
+                }
+            });
+        }
+
+        // Initialize the page by fetching data
+        fetchData();
+    </script>
+</body>
+
+</html>
