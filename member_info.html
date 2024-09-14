@@ -37,7 +37,6 @@
             transform: scale(1.05); /* Zoom effect on hover */
         }
 
-
         .card img {
             border-top-left-radius: 10px;
             border-bottom-left-radius: 10px;
@@ -73,19 +72,33 @@
 
         .page-title {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
             font-size: 32px;
             color: #1E6BA1;
         }
 
-        .table th, .table td {
+        /* New Counter Style */
+        .total-count {
             text-align: center;
-            vertical-align: middle;
+            margin-bottom: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #1E6BA1;
+        }
+
+        .count-number {
+            font-size: 20px;
+            color: #ff5733;
         }
 
         .no-data {
             font-style: italic;
             color: #6c757d;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
         }
     </style>
 </head>
@@ -94,6 +107,12 @@
 
     <div class="container">
         <h1 class="page-title">কান্দাপাড়া মানবিক যুব উন্নয়ন ফাউন্ডেশন</h1>
+        
+        <!-- Total Members Counter -->
+        <div class="total-count">
+            মোট সদস্য সংখ্যা: <span class="count-number" id="memberCount">0</span>
+        </div>
+
         <div id="membersList" class="row">
             <!-- Dynamic member cards will be inserted here by JavaScript -->
         </div>
@@ -127,11 +146,16 @@
         // Fetch members data
         async function loadMembers() {
             const membersList = document.getElementById('membersList');
+            const memberCountElem = document.getElementById('memberCount');
             const membersRef = ref(database, 'members');
             const snapshot = await get(membersRef);
 
             if (snapshot.exists()) {
                 const members = snapshot.val();
+                const memberCount = Object.keys(members).length;
+
+                // Animate member count
+                animateCount(memberCountElem, memberCount);
 
                 // Loop through members and create cards
                 for (const phone in members) {
@@ -173,6 +197,20 @@
             } else {
                 membersList.innerHTML = `<p class="no-data">কোন সদস্য পাওয়া যায়নি।</p>`;
             }
+        }
+
+        // Function to animate the count
+        function animateCount(element, targetNumber) {
+            let currentNumber = 0;
+            const increment = Math.ceil(targetNumber / 100); // Determine the speed of animation
+            const interval = setInterval(() => {
+                currentNumber += increment;
+                if (currentNumber >= targetNumber) {
+                    currentNumber = targetNumber;
+                    clearInterval(interval);
+                }
+                element.textContent = currentNumber;
+            }, 20); // Interval in milliseconds (20ms)
         }
 
         // Load members on page load
