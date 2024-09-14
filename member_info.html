@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="bn">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kandapara Humanity Foundation - A non-profit organization dedicated to humanitarian causes in Bangladesh.">
-    <meta name="keywords" content="Kandapara Humanity Foundation, charity, non-profit, humanitarian, social work, Bangladesh">
-    <meta name="author" content="Kandapara Humanity Foundation">
+    <meta name="description" content="কান্দাপাড়া মানবিক যুব উন্নয়ন ফাউন্ডেশন - সদস্য তালিকা">
+    <meta name="keywords" content="কান্দাপাড়া মানবিক যুব উন্নয়ন ফাউন্ডেশন, চ্যারিটি, অলাভজনক, সদস্য তালিকা, বাংলাদেশ">
+    <meta name="author" content="কান্দাপাড়া মানবিক যুব উন্নয়ন ফাউন্ডেশন">
     <link rel="icon" href="logo_png.png" type="image/x-icon">
-    
-    <title>Kandapara Humanitarian Youth Development Foundation</title>
+
+    <title>কান্দাপাড়া মানবিক যুব উন্নয়ন ফাউন্ডেশন - সদস্য তালিকা</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -17,455 +17,115 @@
     <!-- Custom CSS -->
     <style>
         body {
-            background-color: #f5f5f5;
+            background-color: #f7f7f7;
             font-family: Arial, sans-serif;
         }
 
-        /* Primary Color from the Logo (Blue) */
-        .primary-bg {
-            background-color: #1E6BA1;
+        .container {
+            margin-top: 40px;
         }
 
-        /* Secondary Color from the Logo (Orange) */
-        .secondary-bg {
-            background-color: #E87A31;
-        }
-
-        /* Accent Color */
-        .text-accent {
-            color: #E87A31;
-        }
-
-        /* Logo-centered design */
-        .logo-container img {
-            max-width: 150px;
-            margin: 20px auto;
-        }
-
-        /* Styling Header */
-        header {
-            background-color: #1E6BA1;
-            color: white;
-            padding: 30px 0;
-        }
-
-        header h1 {
-            font-size: 2.5rem;
-        }
-
-        /* Footer Design */
-        footer {
-            background-color: #1E6BA1;
-            color: white;
-            padding: 20px 0;
-        }
-
-        footer p {
-            margin: 0;
-        }
-
-        /* Table styling for Our Team section */
-        .about-us-table {
-            margin-top: 20px;
-        }
-
-        .about-us-table th, .about-us-table td {
-            padding: 10px;
-            border: 1px solid #ddd;
-        }
-
-        .about-us-table th {
-            background-color: #E87A31;
-            color: white;
-        }
-
-        .about-us-table td {
-            background-color: #fdfdfd;
-        }
-
-        .about-us-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 30px;
-        }
-        .founder-section {
-            background-color: #f5f5f5;
-            padding: 40px 0;
-        }
-
-        .founder-image-container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .founder-img {
-            width: 130px; /* Smaller size */
-            height: 130px; /* Maintain aspect ratio */
-            object-fit: cover;
-            border: 4px solid #1E6BA1; /* Adjust border thickness if needed */
-        }
-
-        .founder-title {
-            font-size: 1.6rem;
-            color: #1E6BA1;
-        }
-
-        .founder-title {
-            font-size: 1rem;
-            color: #E87A31;
-        }
-        .card_container {
-            margin-top: 50px;
-            width: 100%;
-            height: auto;
-            padding: 0px 25vw;
-        }
-
-
-        /* About Us Section */
-        #about h2 {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: #1E6BA1;
-            margin-bottom: 30px;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        #about p {
-            font-size: 1.2rem;
-            color: #555;
-            line-height: 1.8;
-            animation: fadeIn 1s ease-in-out;
-        }
-
-        /* Founder and Advisors Section */
-        .founder-card {
-            background-color: #fff;
-            padding: 20px;
+        .card {
+            border: none;
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            animation: slideUp 1s ease-in-out;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            transition: transform 0.3s ease; /* Smooth zoom transition */
         }
 
-        .founder-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+        .card:hover {
+            transform: scale(1.05); /* Zoom effect on hover */
         }
 
-        .founder-img {
-            width: 150px;
-            height: 150px;
-            border: 5px solid #1E6BA1;
-            transition: border-color 0.3s ease;
+        .card img {
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+            object-fit: cover;
+            height: 100%;
         }
 
-        .founder-card:hover .founder-img {
-            border-color: #14567A;
+        .card-body {
+            padding: 20px;
         }
 
-        .founder-title {
-            font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
+        .member-info {
+            font-size: 16px;
         }
 
-        /* Animations */
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-            }
-            to {
-                opacity: 1;
-            }
+        .member-info strong {
+            color: #1E6BA1;
         }
 
-        @keyframes slideUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
+        .profile-placeholder {
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            color: #6c757d;
         }
 
-
-        /* Responsive text size adjustments */
-        @media (max-width: 750px) {
-            .card_container {
-                padding: 0px 10vw;
-            }
+        .no-picture {
+            font-size: 24px;
+            color: #6c757d;
         }
 
-        @media (max-width: 576px) {
-            .container .founder-img {
-                width: 80px; /* Smaller size for very small screens */
-                height: 80px;
-            }
-
-            .founder-title {
-                font-size: 1.4rem;
-            }
-
-            .founder-title {
-                font-size: 0.9rem;
-            }
+        .page-title {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 32px;
+            color: #1E6BA1;
         }
 
-        @media (min-width: 576px) and (max-width: 768px) {
-            .founder-img {
-                width: 90px; /* Slightly larger size for medium screens */
-                height: 90px;
-            }
+        /* New Counter Style */
+        .total-count {
+            text-align: center;
+            margin-bottom: 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: #1E6BA1;
+        }
 
-            .founder-title {
-                font-size: 1.5rem;
-            }
+        .count-number {
+            font-size: 20px;
+            color: #ff5733;
+        }
 
-            .founder-title {
-                font-size: 1rem;
-            }
+        .no-data {
+            font-style: italic;
+            color: #6c757d;
+        }
+
+        .table th, .table td {
+            text-align: center;
+            vertical-align: middle;
         }
     </style>
 </head>
 
 <body>
-    <!-- Header Section with Logo -->
-    <header class="text-center primary-bg">
-        <div class="logo-container">
-            <img src="logo_png.png" alt="Kandapara Humanity Foundation Logo">
+
+    <div class="container">
+        <h1 class="page-title">কান্দাপাড়া মানবিক যুব উন্নয়ন ফাউন্ডেশন</h1>
+        
+        <!-- Total Members Counter -->
+        <div class="total-count">
+            মোট সদস্য সংখ্যা: <span class="count-number" id="memberCount">0</span>
         </div>
-        <h1>কান্দাপাড়া মানবিক যুব উন্নয়ন ফাউন্ডেশন</h1>
-        <p>সাহায্যের হাত, উজ্জ্বল জীবন</p>
-    </header>
 
-    <!-- Navigation Bar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-        <div class="container-fluid">
-            <a class="navbar-brand text-primary" href="#">KHYDF</a>
-            <a class="nav-link" href="add_member.html">নিবন্ধন করুন</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#about">আমাদের সম্পর্কে</a> 
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="donation_page.html">আমাদের দল</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="member_info.html">আমাদের দল</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#our_team">কমিটির সদস্য</a>
-                    </li>
-                    <li class="nav-item" style="cursor: pointer;">
-                        <a id="donation_management" class="nav-link">দান অনুমোদন</a>
-                    </li>
-                    <li class="nav-item" style="cursor: pointer;">
-                        <a id="money_managment" class="nav-link">অর্থ ব্যবস্থাপনা</a>
-                    </li>
-                    <li class="nav-item">
-                        <a id="mony_management_list" style="cursor: pointer;" class="nav-link">অর্থ তালিকা</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="add_member.html">নিবন্ধন করুন</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="https://www.facebook.com/profile.php?id=61565378521604&mibextid=ZbWKwL">যোগাযোগ</a>
-                    </li>
-                </ul>
-            </div>
+        <div id="membersList" class="row">
+            <!-- Dynamic member cards will be inserted here by JavaScript -->
         </div>
-    </nav>
-
-    <div class="container mt-5">
-        <div class="card shadow-lg">
-          <div class="card-body text-center">
-            <!-- Donation Title -->
-            <h2 class="card-title mb-4">অনুদান দিন আমাদের সেবায়</h2>
-            
-            <!-- Donation Description -->
-            <p class="card-text mb-4">
-              আমরা আমাদের প্ল্যাটফর্মের মাধ্যমে আপনার জন্য উন্নত সেবা প্রদানের জন্য প্রতিশ্রুতিবদ্ধ। 
-              আপনার অনুদান আমাদের আরও উন্নত প্রযুক্তি এবং সমাধান প্রদান করতে সাহায্য করবে।
-              আমাদের কার্যক্রমের ধারাবাহিকতা রক্ষার জন্য, আপনার সহায়তা অত্যন্ত গুরুত্বপূর্ণ।
-            </p>
-            
-            <!-- Donation Button -->
-            <a href="donation_page.html" class="btn btn-primary">অনুদান দিন</a>
-          </div>
-        </div>
-    </div>      
-
-    <!-- Cards -->
-     <div class="card_container">
-        <div id="card1" class="card mb-3">
-            <img src="banner-of-social-charity-activity-nature-cleaning.jpg" class="card-img-top" alt="...">
-            <div class="card-body">
-              <h5 class="card-title">একসাথে এগিয়ে যাওয়ার গল্প</h5>
-              <p class="card-text">আপনার প্রতিটি পদক্ষেপ এই পৃথিবীকে আরও সুন্দর ও মানবিক করে তোলে। একসাথে আমরা সমাজের উন্নয়নে গুরুত্বপূর্ণ ভূমিকা পালন করতে পারি। আপনার অবদান সমাজের প্রতিটি মানুষের জীবনে আলোকিত প্রভাব ফেলবে। আমরা বিশ্বাস করি, আপনার প্রত্যেকটা কাজ পরিবর্তনের নতুন দুয়ার খুলে দিতে পারে। একসাথে চলি, সমৃদ্ধ ভবিষ্যতের পথে।</p>
-              <p class="card-text"><small class="text-body-secondary">Last updated 9/13/2024</small></p>
-            </div>
-        </div>
-     </div>
-
-    <!-- About Us Section -->
-    <section id="about" class="container mt-5">
-        <h2 class="text-accent text-center">আমাদের সম্পর্কে</h2>
-        <p class="text-center">
-            কান্দাপাড়া মানবিক যুব উন্নয়ন ফাউন্ডেশন মানবতার সেবায় প্রতিশ্রুতিবদ্ধ একটি অলাভজনক সংস্থা। আমাদের লক্ষ্য হল মানবিক সহায়তা, শিক্ষা এবং সহায়তা প্রদানের মাধ্যমে সমাজের প্রান্তিক অংশগুলিকে উন্নীত করা। আমরা কম ভাগ্যবানদের জীবনে অর্থবহ পরিবর্তন ঘটাতে সম্মিলিত প্রচেষ্টার শক্তিতে বিশ্বাস করি।
-        </p>
-
-        <!-- Founder and Advisors Section -->
-        <section class="founder-section text-center mt-5">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <!-- Founder -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="founder-card mb-5">
-                            <div class="founder-image-container mb-3">
-                                <img src="founder of humanity.jpg" alt="Founder Picture" class="founder-img img-fluid rounded-circle">
-                            </div>
-                            <h3 class="mt-3 founder-title">সুজন মিয়া</h3> <!-- Founder Name -->
-                            <p class="mb-0 founder-title">প্রতিষ্ঠাতা</p>
-                        </div>
-                    </div>
-
-                    <!-- Advisor 1 -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="founder-card mb-5">
-                            <div class="founder-image-container mb-3">
-                                <img src="kader_vai.jpg" alt="Advisor 1 Picture" class="founder-img img-fluid rounded-circle">
-                            </div>
-                            <h3 class="mt-3 founder-title">মোহাম্মদ আব্দুল কাদের</h3> <!-- Advisor 1 Name -->
-                            <p class="mb-0 founder-title">উপদেষ্টা</p>
-                        </div>
-                    </div>
-
-                    <!-- Advisor 2 -->
-                    <div class="col-12 col-md-6 col-lg-4">
-                        <div class="founder-card mb-5">
-                            <div class="founder-image-container mb-3">
-                                <img src="jahid_vai.jpg" alt="Advisor 2 Picture" class="founder-img img-fluid rounded-circle">
-                            </div>
-                            <h3 class="mt-3 founder-title">জাহিদ</h3> <!-- Advisor 2 Name -->
-                            <p class="mb-0 founder-title">উপদেষ্টা</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </section>
-
-    <!-- Our Team Section -->
-    <main id="our_team" class="container mt-5">
-        <section class="about-us text-center">
-            <h2 class="text-accent">কমিটির সদস্য</h2>
-            <table class="about-us-table table table-striped table-bordered">
-                <thead>
-                    <tr>
-                        <th>নাম</th>
-                        <th>মোবাইল নাম্বার</th>
-                        <th>পদবী</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>আল-আমীন</td>
-                        <td>none</td>
-                        <td>সভাপতি</td>
-                    </tr>
-                    <tr>
-                        <td>সজীব খান</td>
-                        <td>none</td>
-                        <td>সহ-সভাপতি</td>
-                    </tr>
-                    <tr>
-                        <td>রানা চৌধুরী</td>
-                        <td>none</td>
-                        <td>সহ-সভাপতি</td>
-                    </tr>
-                    <tr>
-                        <td>সজীব মিয়া</td>
-                        <td>none</td>
-                        <td>সহ-সভাপতি</td>
-                    </tr>
-                    <tr>
-                        <td>আলমগীর হোসেন</td>
-                        <td>none</td>
-                        <td>সহ-সভাপতি</td>
-                    </tr>
-                    <tr>
-                        <td>মাসুদ-উজ-জামান</td>
-                        <td>০১৭০০৯৯৬৬৩১</td>
-                        <td>সহ-সাধারন সম্পাদক</td>
-                    </tr>
-                    <tr>
-                        <td>মো: সুমন হোসেন রবিউল</td>
-                        <td>০১৬৪৭৬১৬৬০৭</td>
-                        <td>সাংগাঠনিক সম্পাদক</td>
-                    </tr>
-                    <tr>
-                        <td>ফয়সাল শিকদার</td>
-                        <td>০১৬২৯১৫৪৩৫৯</td>
-                        <td>সহ-সাংগাঠনিক সম্পাদক</td>
-                    </tr>
-                    <tr>
-                        <td>শাকিল আহম্মেদ (আগুন)</td>
-                        <td>০১৬৪৪৯৭৮২৬০</td>
-                        <td>প্রচার সম্পাদক</td>
-                    </tr>
-                    <tr>
-                        <td>মাসুম পারভেজ</td>
-                        <td>০১৭৫২৪৮৩৮৯১</td>
-                        <td>সহ-প্রচার সম্পাদক</td>
-                    </tr>
-                    <tr>
-                        <td>আশিকুর রহমান (আশিক)</td>
-                        <td>none</td>
-                        <td>সাংস্কৃতিক সম্পাদক</td>
-                    </tr>
-                    <tr>
-                        <td>বাবু সওদাগর</td>
-                        <td>none</td>
-                        <td>সহ-সাংস্কৃতিক সম্পাদক</td>
-                    </tr>
-                    <tr>
-                        <td>কামরুল হাসান</td>
-                        <td>০১৮৮৬১৪২১২১</td>
-                        <td>কোষাদক্ষ্য</td>
-                    </tr>
-                    <tr>
-                        <td>মো: মারুফ হোসেন</td>
-                        <td>০১৮৬১১৬৩৫৬৬</td>
-                        <td>সহ-কোষাদক্ষ্য</td>
-                    </tr>
-                </tbody>
-            </table>            
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="text-center primary-bg mt-5">
-        <div class="container">
-            <p>&copy; 2024 Kandapara Humanity Foundation. All rights reserved.</p>
-            <p>Connect with us: 
-                <a target="_blank" href="https://www.facebook.com/profile.php?id=61565378521604&mibextid=ZbWKwL" class="text-white">Facebook</a>
-            </p>
-        </div>
-    </footer>
+    </div>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Firebase and Data Fetching Script -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
         import { getDatabase, ref, get } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+        import { getStorage, ref as storageRef, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -480,110 +140,83 @@
 
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
-        const db = getDatabase(app);
+        const database = getDatabase(app);
+        const storage = getStorage(app);
 
-        // Open mony management system
-        const money_managment = document.getElementById("money_managment");
-        money_managment.addEventListener("click", () => {
-            // Prompt for password
-            const userPassword = prompt("Enter password:");
+        // Fetch members data
+        async function loadMembers() {
+            const membersList = document.getElementById('membersList');
+            const memberCountElem = document.getElementById('memberCount');
+            const membersRef = ref(database, 'members');
+            const snapshot = await get(membersRef);
 
-            // Check password
-            async function checkPassword() {
-                const passwordRef = ref(db, 'mony_management_password'); // Update the path as per your database structure
+            if (snapshot.exists()) {
+                const members = snapshot.val();
+                const memberCount = Object.keys(members).length;
 
-                try {
-                    const snapshot = await get(passwordRef);
-                    if (snapshot.exists()) {
-                        const storedPassword = snapshot.val();
-                        if (userPassword === storedPassword) {
-                            // Redirect if password is correct
-                            window.location.href = 'mony_management.html';
-                        } else {
-                            // Show error if password is incorrect
-                            alert('Invalid password');
-                        }
-                    } else {
-                        console.error('No password found in the database.');
-                    }
-                } catch (error) {
-                    console.error('Error getting password:', error);
+                // Animate member count
+                animateCount(memberCountElem, memberCount);
+
+                // Loop through members and create cards
+                for (const phone in members) {
+                    const member = members[phone];
+                    const name = member.name || "none";
+                    const email = member.email || "none";
+                    const bloodGroup = member.bloodGroup || "none";
+                    const address = member.address || "none";
+                    const designation = member.designation || "none";
+                    const profilePicUrl = member.profilePicUrl || "none";
+
+                    const memberCard = document.createElement('div');
+                    memberCard.classList.add('col-md-6', 'col-lg-4');
+
+                    memberCard.innerHTML = `
+                        <div class="card">
+                            <div class="row no-gutters">
+                                <div class="col-4">
+                                    ${profilePicUrl !== "none" ? 
+                                        `<img src="${profilePicUrl}" class="img-fluid" alt="${name} এর প্রোফাইল ছবি">` :
+                                        `<div class="profile-placeholder text-center no-picture">কোন ছবি নেই</div>`
+                                    }
+                                </div>
+                                <div class="col-8">
+                                    <div class="card-body">
+                                        <h5 class="card-title">${name}</h5>
+                                        <p class="member-info"><strong>মোবাইল:</strong> ${phone}</p>
+                                        <p class="member-info"><strong>ইমেইল:</strong> ${email}</p>
+                                        <p class="member-info"><strong>রক্তের গ্রুপ:</strong> ${bloodGroup}</p>
+                                        <p class="member-info"><strong>ঠিকানা:</strong> ${address}</p>
+                                        <p class="member-info"><strong>পদবী:</strong> ${designation}</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    membersList.appendChild(memberCard);
                 }
+            } else {
+                membersList.innerHTML = `<p class="no-data">কোন সদস্য পাওয়া যায়নি।</p>`;
             }
+        }
 
-            // Perform password check
-            if (userPassword !== null) {
-                checkPassword();
-            }
-        });
-
-        // Open mony management list system
-        const mony_management_list = document.getElementById("mony_management_list");
-        mony_management_list.addEventListener("click", () => {
-            // Prompt for password
-            const userPassword_list = prompt("Enter password:");
-                // Check password
-                async function checkPassword() {
-                const passwordRef = ref(db, 'mony_management_password'); // Update the path as per your database structure
-
-                try {
-                    const snapshot = await get(passwordRef);
-                    if (snapshot.exists()) {
-                        const storedPassword = snapshot.val();
-                        if (userPassword_list === storedPassword) {
-                            // Redirect if password is correct
-                            window.location.href = 'mony_details.html';
-                        } else {
-                            // Show error if password is incorrect
-                            alert('Invalid password');
-                        }
-                    } else {
-                        console.error('No password found in the database.');
-                    }
-                } catch (error) {
-                    console.error('Error getting password:', error);
+        // Function to animate the count
+        function animateCount(element, targetNumber) {
+            let currentNumber = 0;
+            const increment = Math.ceil(targetNumber / 100); // Determine the speed of animation
+            const interval = setInterval(() => {
+                currentNumber += increment;
+                if (currentNumber >= targetNumber) {
+                    currentNumber = targetNumber;
+                    clearInterval(interval);
                 }
-            }
+                element.textContent = currentNumber;
+            }, 20); // Interval in milliseconds (20ms)
+        }
 
-            // Perform password check
-            if (userPassword_list !== null) {
-                checkPassword();
-            }
-        });
-
-        // Open donation management
-        const donation_management = document.getElementById("donation_management");
-        donation_management.addEventListener("click", () => {
-            // Prompt for password
-            const userPassword_donation = prompt("Enter password:");
-                // Check password
-                async function checkPassword() {
-                const passwordRef = ref(db, 'mony_management_password'); // Update the path as per your database structure
-
-                try {
-                    const snapshot = await get(passwordRef);
-                    if (snapshot.exists()) {
-                        const storedPassword = snapshot.val();
-                        if (userPassword_donation === storedPassword) {
-                            // Redirect if password is correct
-                            window.location.href = 'donation_approval.html';
-                        } else {
-                            // Show error if password is incorrect
-                            alert('Invalid password');
-                        }
-                    } else {
-                        console.error('No password found in the database.');
-                    }
-                } catch (error) {
-                    console.error('Error getting password:', error);
-                }
-            }
-
-            // Perform password check
-            if (userPassword_donation !== null) {
-                checkPassword();
-            }
-        })
+        // Load members on page load
+        loadMembers();
     </script>
+
 </body>
+
 </html>
