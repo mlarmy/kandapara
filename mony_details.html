@@ -4,12 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Kandapara Humanity Foundation - Money Management System">
+    <meta name="description" content="Kandapara Humanity Foundation - Money Management List">
     <meta name="keywords" content="Kandapara Humanity Foundation, charity, donation, non-profit, money management">
     <meta name="author" content="Kandapara Humanity Foundation">
     <link rel="icon" href="logo_png.png" type="image/x-icon">
 
-    <title>KHYDF Money Management</title>
+    <title>KHYDF Money Management - List</title>
 
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -31,84 +31,67 @@
             margin-bottom: 30px;
         }
 
-        .form-container {
+        .list-container {
             background: white;
             padding: 20px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .table th, .table td {
+            text-align: center;
+        }
+
+        .table-container {
             margin-bottom: 30px;
-        }
-
-        .btn-primary {
-            background-color: #1E6BA1;
-            border: none;
-        }
-
-        .summary {
-            padding: 20px;
-            background-color: #e9f7fe;
-            border: 1px solid #bce7ff;
-            border-radius: 10px;
-        }
-
-        .animated-alert {
-            animation: fadeIn 1.5s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h2>অর্থ ব্যবস্থাপনা</h2>
+        <h2>অর্থ তালিকা</h2>
 
-        <div class="form-container">
-            <h3>Add Donation</h3>
-            <form id="donationForm">
-                <div class="mb-3">
-                    <label for="donorName" class="form-label">Donor Name</label>
-                    <input type="text" class="form-control" id="donorName" required>
-                </div>
-                <div class="mb-3">
-                    <label for="donationAmount" class="form-label">Donation Amount</label>
-                    <input type="number" class="form-control" id="donationAmount" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Donation</button>
-            </form>
-        </div>
+        <div class="list-container">
+            <h3>Donations</h3>
+            <div class="table-container">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Donor Name</th>
+                            <th>Donation Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="donationsTableBody">
+                        <!-- Donations will be populated here -->
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="form-container">
-            <h3>Add Investment</h3>
-            <form id="investmentForm">
-                <div class="mb-3">
-                    <label for="investmentReason" class="form-label">Reason for Investment</label>
-                    <input type="text" class="form-control" id="investmentReason" required>
-                </div>
-                <div class="mb-3">
-                    <label for="investmentAmount" class="form-label">Investment Amount</label>
-                    <input type="number" class="form-control" id="investmentAmount" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Add Investment</button>
-            </form>
-        </div>
-
-        <div class="summary">
-            <h3>Summary</h3>
-            <p id="totalDonated">Total Donated: ৳0</p>
-            <p id="totalInvested">Total Invested: ৳0</p>
-            <p id="remainingBalance">Remaining Balance: ৳0</p>
+            <h3>Investments</h3>
+            <div class="table-container">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                        <tr>
+                            <th>Reason for Investment</th>
+                            <th>Investment Amount</th>
+                            <th>Date</th>
+                        </tr>
+                    </thead>
+                    <tbody id="investmentsTableBody">
+                        <!-- Investments will be populated here -->
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 
-    <!-- Firebase and Form Handling Script -->
+    <!-- Firebase and Data Fetching Script -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-        import { getDatabase, ref, set, update, get, child } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+        import { getDatabase, ref, get, child } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
 
         // Firebase Configuration
         const firebaseConfig = {
@@ -125,81 +108,48 @@
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
-        let totalDonated = 0;
-        let totalInvested = 0;
+        const donationsTableBody = document.getElementById('donationsTableBody');
+        const investmentsTableBody = document.getElementById('investmentsTableBody');
 
-        const donationForm = document.getElementById('donationForm');
-        const investmentForm = document.getElementById('investmentForm');
-        const totalDonatedElement = document.getElementById('totalDonated');
-        const totalInvestedElement = document.getElementById('totalInvested');
-        const remainingBalanceElement = document.getElementById('remainingBalance');
-
-        // Add donation
-        donationForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const donorName = document.getElementById('donorName').value;
-            const donationAmount = parseFloat(document.getElementById('donationAmount').value);
-            const donationId = Date.now(); // Unique ID using timestamp
-
-            set(ref(database, 'donations/' + donationId), {
-                donorName: donorName,
-                donationAmount: donationAmount
-            });
-
-            alert("Donation added successfully");
-            totalDonated += donationAmount;
-            updateSummary();
-        });
-
-        // Add investment
-        investmentForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-            const investmentReason = document.getElementById('investmentReason').value;
-            const investmentAmount = parseFloat(document.getElementById('investmentAmount').value);
-            const investmentId = Date.now(); // Unique ID using timestamp
-
-            set(ref(database, 'investments/' + investmentId), {
-                investmentReason: investmentReason,
-                investmentAmount: investmentAmount
-            });
-
-            alert("Investment added successfully");
-            totalInvested += investmentAmount;
-            updateSummary();
-        });
-
-        // Update the summary section
-        function updateSummary() {
-            const remainingBalance = totalDonated - totalInvested;
-            totalDonatedElement.textContent = `Total Donated: ৳${totalDonated}`;
-            totalInvestedElement.textContent = `Total Invested: ৳${totalInvested}`;
-            remainingBalanceElement.textContent = `Remaining Balance: ৳${remainingBalance}`;
-        }
-
-        // Fetch initial values from the database (optional)
-        function fetchSummary() {
+        // Fetch donations and investments data
+        function fetchData() {
             const dbRef = ref(database);
+
+            // Fetch donations
             get(child(dbRef, 'donations')).then((snapshot) => {
                 if (snapshot.exists()) {
                     snapshot.forEach(childSnapshot => {
-                        totalDonated += childSnapshot.val().donationAmount;
+                        const data = childSnapshot.val();
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${data.donorName}</td>
+                            <td>${data.donationAmount}</td>
+                            <td>${new Date(parseInt(childSnapshot.key)).toLocaleDateString()}</td>
+                        `;
+                        donationsTableBody.appendChild(row);
                     });
-                    updateSummary();
                 }
             });
 
+            // Fetch investments
             get(child(dbRef, 'investments')).then((snapshot) => {
                 if (snapshot.exists()) {
                     snapshot.forEach(childSnapshot => {
-                        totalInvested += childSnapshot.val().investmentAmount;
+                        const data = childSnapshot.val();
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${data.investmentReason}</td>
+                            <td>${data.investmentAmount}</td>
+                            <td>${new Date(parseInt(childSnapshot.key)).toLocaleDateString()}</td>
+                        `;
+                        investmentsTableBody.appendChild(row);
                     });
-                    updateSummary();
                 }
             });
         }
 
-        // Initialize the summary by fetching data
-        fetchSummary();
+        // Initialize the page by fetching data
+        fetchData();
     </script>
 </body>
 
