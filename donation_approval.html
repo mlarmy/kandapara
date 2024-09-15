@@ -26,6 +26,9 @@
             font-size: 1.5rem;
             color: #333;
         }
+        .table-responsive {
+            overflow-x: auto; /* Enable horizontal scrolling on small screens */
+        }
         table {
             margin-top: 20px;
             width: 100%;
@@ -61,12 +64,6 @@
                 font-size: 2rem;
             }
         }
-        /* Hide less important columns on small screens */
-        @media (max-width: 768px) {
-            .hide-on-small {
-                display: none;
-            }
-        }
     </style>
 </head>
 <body>
@@ -80,9 +77,9 @@
                     <tr>
                         <th>দাতা নাম</th>
                         <th>টাকা ব্যবস্থাপনার নম্বর</th>
-                        <th class="hide-on-small">দানকারী ফোন নম্বর</th>
+                        <th>দানকারী ফোন নম্বর</th>
                         <th>দান পরিমাণ</th>
-                        <th class="hide-on-small">পেমেন্ট পদ্ধতি</th>
+                        <th>পেমেন্ট পদ্ধতি</th>
                         <th>অ্যাকশন</th>
                     </tr>
                 </thead>
@@ -126,9 +123,9 @@
                             row.innerHTML = `
                                 <td>${donation.donorName}</td>
                                 <td>${donation.moneyManagerNumber}</td>
-                                <td class="hide-on-small">${donation.donorNumber}</td>
+                                <td>${donation.donorNumber}</td>
                                 <td>${donation.donationAmount}</td>
-                                <td class="hide-on-small">${donation.paymentMethod}</td>
+                                <td>${donation.paymentMethod}</td>
                                 <td>
                                     <button class="btn btn-success" onclick="approveDonation('${id}', '${donation.donorName}', '${donation.moneyManagerNumber}', '${donation.donorNumber}', '${donation.donationAmount}', '${donation.paymentMethod}')">অনুমোদন</button>
                                     <button class="btn btn-danger" onclick="declineDonation('${id}')">বাতিল</button>
