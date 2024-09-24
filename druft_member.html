@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo_png.png" type="image/x-icon">
+    
+    <title>KHYDF - Draft Members</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <style>
+        body {
+            background-color: #f7f7f7;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .container h2 {
+            text-align: center;
+            color: #1E6BA1;
+            margin-bottom: 20px;
+        }
+
+        .btn-confirm {
+            background-color: #28a745;
+            color: white;
+        }
+
+        .btn-cancel {
+            background-color: #dc3545;
+            color: white;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+        <h2>Draft Members</h2>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Email</th>
+                    <th scope="col">Phone</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody id="draftMembersTable">
+                <!-- Draft members will be populated here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Firebase Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
+        import { getDatabase, ref, onValue, set } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+        // Add this import at the top of your script section in draft_members.html
+        import { getStorage, ref as storageRef, deleteObject } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
+
+
+        // Firebase Configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyDBoc56Cwi1nHhYUFiueKIjkRx4q2z4s6o",
+            authDomain: "k-h-f-eeeab.firebaseapp.com",
+            projectId: "k-h-f-eeeab",
+            storageBucket: "k-h-f-eeeab.appspot.com",
+            messagingSenderId: "150200923957",
+            appId: "1:150200923957:web:5261d46e05fcf3f65cbe7c",
+            measurementId: "G-6S8TQH2E7Z"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        // Initialize Firebase Storage
+        const storage = getStorage(app);
+
+
+        // Fetch and display draft members
+        const draftMembersRef = ref(database, 'draft_members');
+        onValue(draftMembersRef, (snapshot) => {
+            const draftMembers = snapshot.val();
+            const draftMembersTable = document.getElementById('draftMembersTable');
+            draftMembersTable.innerHTML = ''; // Clear previous entries
+
+            for (const phone in draftMembers) {
+                const member = draftMembers[phone];
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${member.name}</td>
+                    <td>${member.email || 'N/A'}</td>
+                    <td>${member.phone}</td>
+                    <td>
+                        <button class="btn btn-confirm" onclick="confirmMember('${phone}')">Confirm</button>
+                        <button class="btn btn-cancel" onclick="cancelMember('${phone}')">Cancel</button>
+                    </td>
+                `;
+                draftMembersTable.appendChild(row);
+            }
+        });
+
+        // Confirm member and move to main members node
+        window.confirmMember = function (phone) {
+            const memberRef = ref(database, 'draft_members/' + phone);
+            onValue(memberRef, (snapshot) => {
+                const memberData = snapshot.val();
+                if (memberData) {
+                    // Move to members node
+                    set(ref(database, 'members/' + phone), memberData)
+                        .then(() => {
+                            // Remove from draft members
+                            return set(memberRef, null);
+                        })
+                        .then(() => {
+                            alert('Member confirmed and saved!');
+                        })
+                        .catch((error) => {
+                            console.error('Error confirming member:', error);
+                            alert('Failed to confirm member.');
+                        });
+                } else {
+                }
+            });
+        };
+
+        // Cancel member registration and remove from draft members
+        window.cancelMember = function (phone, profilePicUrl) {
+            const memberRef = ref(database, 'draft_members/' + phone);
+            const profilePicRef = storageRef(storage, 'pictures/' + phone); // Reference to the profile picture in storage
+
+            // Remove from draft members
+            set(memberRef, null)
+                .then(() => {
+                    // Delete profile picture from storage
+                    return deleteObject(profilePicRef);
+                })
+                .then(() => {
+                    alert('Member registration canceled and profile picture deleted!');
+                })
+                .catch((error) => {
+                    console.error('Error canceling member:', error);
+                    alert('Failed to cancel member registration.');
+                });
+        };
+    </script>
+
+</body>
+
+</html>
