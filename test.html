@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kandapara Website - Red Alert</title>
+    <style>
+        body {
+            font-family: 'Orbitron', sans-serif;
+            background-color: #000;
+            color: #ff4c4c;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+            background-image: radial-gradient(circle, rgba(50,50,50,1) 0%, rgba(0,0,0,1) 100%);
+        }
+
+        .alert-box {
+            background-color: #1a0000;
+            border: 4px solid #ff4c4c;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 0 30px #ff4c4c, 0 0 50px #ff4c4c inset;
+            text-align: center;
+            max-width: 600px;
+            animation: flicker 1.5s infinite, glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes flicker {
+            0%, 100% {
+                box-shadow: 0 0 30px #ff4c4c, 0 0 50px #ff4c4c inset;
+            }
+            50% {
+                box-shadow: 0 0 10px #ff4c4c, 0 0 20px #ff4c4c inset;
+            }
+        }
+
+        @keyframes glow {
+            0% { border-color: #ff4c4c; }
+            100% { border-color: #ff0000; }
+        }
+
+        .alert-box h1 {
+            font-size: 2rem;
+            color: #ff4c4c;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 5px #ff4c4c;
+        }
+
+        .alert-box p {
+            font-size: 1.2rem;
+            color: #ffcccc;
+            margin-bottom: 10px;
+        }
+
+        .loader {
+            border: 4px solid #1a0000;
+            border-top: 4px solid #ff4c4c;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Pulse Animation */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+            50% {
+                transform: scale(1.2);
+                opacity: 0.8;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        /* Futuristic font */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+    </style>
+</head>
+<body>
+
+    <div class="alert-box">
+        <h1>Kandapara Website - Red Alert</h1>
+        <div id="info">
+            <div class="loader"></div>
+            <p>Loading IP info...</p>
+        </div>
+    </div>
+
+    <!-- Audio file for alert sound -->
+    <audio id="alert-sound" src="security_alert.mp3" loop></audio>
+
+    <script>
+        // Play the alert sound in a loop
+        window.onload = function() {
+            const alertSound = document.getElementById('alert-sound');
+            alertSound.play().catch(error => console.error('Audio playback issue:', error));
+        };
+
+        // Fetch user's public IP address from ipify
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                const ipAddress = data.ip;
+
+                // Fetch additional geolocation details using ip-api.com
+                fetch(`http://ip-api.com/json/${ipAddress}`)
+                    .then(response => response.json())
+                    .then(geoData => {
+                        const { city, regionName, country, isp } = geoData;
+                        const content = `
+                            <p><strong>Public IP Address:</strong> ${ipAddress}</p>
+                            <p><strong>Location:</strong> ${city}, ${regionName}, ${country}</p>
+                            <p><strong>ISP:</strong> ${isp}</p>
+                            <p><strong>Warning</strong></p>
+                            <p><strong>Alert Level:</strong> High</p>
+                        `;
+                        document.getElementById('info').innerHTML = content;
+
+                        // Add pulse animation after loading IP info
+                        document.getElementById('info').classList.add('pulse');
+                    })
+                    .catch(error => {
+                        console.error('Error fetching geolocation:', error);
+                        document.getElementById('info').innerHTML = '<p>Failed to retrieve geolocation information.</p>';
+                    });
+            })
+            .catch(error => {
+                console.error('Error fetching IP:', error);
+                document.getElementById('info').innerHTML = '<p>Failed to retrieve IP address.</p>';
+            });
+    </script>
+
+</body>
+</html>
