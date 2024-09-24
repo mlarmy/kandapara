@@ -264,6 +264,9 @@
                         <a id="donation_management" class="nav-link">দান অনুমোদন</a>
                     </li>
                     <li class="nav-item" style="cursor: pointer;">
+                        <a id="druft_members" class="nav-link">ড্রাফ্ট সদস্য</a>
+                    </li>
+                    <li class="nav-item" style="cursor: pointer;">
                         <a id="money_managment" class="nav-link">অর্থ ব্যবস্থাপনা</a>
                     </li>
                     <li class="nav-item">
@@ -560,6 +563,40 @@
                         if (userPassword_donation === storedPassword) {
                             // Redirect if password is correct
                             window.location.href = 'donation_approval.html';
+                        } else {
+                            // Show error if password is incorrect
+                            alert('Invalid password');
+                        }
+                    } else {
+                        console.error('No password found in the database.');
+                    }
+                } catch (error) {
+                    console.error('Error getting password:', error);
+                }
+            }
+
+            // Perform password check
+            if (userPassword_donation !== null) {
+                checkPassword();
+            }
+        })
+
+        // Open druft members
+        const druft_members = document.getElementById("druft_members");
+        druft_members.addEventListener("click", () => {
+            // Prompt for password
+            const userPassword_donation = prompt("Enter password:");
+                // Check password
+                async function checkPassword() {
+                const passwordRef = ref(db, 'mony_management_password'); // Update the path as per your database structure
+
+                try {
+                    const snapshot = await get(passwordRef);
+                    if (snapshot.exists()) {
+                        const storedPassword = snapshot.val();
+                        if (userPassword_donation === storedPassword) {
+                            // Redirect if password is correct
+                            window.location.href = 'druft_member.html';
                         } else {
                             // Show error if password is incorrect
                             alert('Invalid password');
