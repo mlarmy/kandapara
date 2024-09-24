@@ -132,9 +132,9 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-app.js";
-        import { getDatabase, ref, set, update, remove, get } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
+        import { getDatabase, ref, set, get } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-database.js";
         import { getStorage, ref as storageRef, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/9.1.3/firebase-storage.js";
-    
+
         // Firebase Configuration
         const firebaseConfig = {
             apiKey: "AIzaSyDBoc56Cwi1nHhYUFiueKIjkRx4q2z4s6o",
@@ -145,16 +145,16 @@
             appId: "1:150200923957:web:5261d46e05fcf3f65cbe7c",
             measurementId: "G-6S8TQH2E7Z"
         };
-    
+
         // Initialize Firebase
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
         const storage = getStorage(app);
-    
+
         // Handle registration form submission
         document.querySelector('#registrationForm').addEventListener('submit', async function (event) {
             event.preventDefault(); // Prevent the default form submission
-    
+
             // Get form values
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
@@ -163,16 +163,17 @@
             const address = document.getElementById('address').value;
             const designation = document.getElementById('designation').value;
             const profilePic = document.getElementById('profilePic').files[0];
-    
+
+            // Save to draft members
             if (profilePic) {
                 // Create a storage reference and upload the profile picture
                 const profilePicRef = storageRef(storage, 'pictures/' + phone);
                 try {
                     const snapshot = await uploadBytes(profilePicRef, profilePic);
                     const profilePicUrl = await getDownloadURL(profilePicRef);
-    
-                    // Save user data including profile picture URL
-                    set(ref(database, 'members/' + phone), {
+
+                    // Save user data including profile picture URL in draft
+                    set(ref(database, 'draft_members/' + phone), {
                         name: name,
                         email: email,
                         bloodGroup: bloodGroup,
@@ -181,20 +182,20 @@
                         designation: designation,
                         profilePicUrl: profilePicUrl
                     }).then(() => {
-                        alert('Registration successful!');
+                        alert('Registration successful! Draft saved.');
                         document.querySelector('#registrationForm').reset();
                     }).catch((error) => {
                         console.error('Error saving data:', error);
-                        alert('Failed to register.');
+                        alert('Failed to save draft.');
                     });
-    
+
                 } catch (error) {
                     console.error('Error uploading profile picture:', error);
                     alert('Failed to upload profile picture.');
                 }
             } else {
-                // Save user data without profile picture URL
-                set(ref(database, 'members/' + phone), {
+                // Save user data without profile picture URL in draft
+                set(ref(database, 'draft_members/' + phone), {
                     name: name,
                     email: email,
                     bloodGroup: bloodGroup,
@@ -202,16 +203,15 @@
                     address: address,
                     designation: designation
                 }).then(() => {
-                    alert('Registration successful!');
+                    alert('Registration successful! Draft saved.');
                     document.querySelector('#registrationForm').reset();
                 }).catch((error) => {
                     console.error('Error saving data:', error);
-                    alert('Failed to register.');
+                    alert('Failed to save draft.');
                 });
             }
         });
     </script>    
 
 </body>
-
 </html>
