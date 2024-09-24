@@ -73,26 +73,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Pulse Animation */
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% {
-                transform: scale(1);
-                opacity: 1;
-            }
-            50% {
-                transform: scale(1.2);
-                opacity: 0.8;
-            }
-            100% {
-                transform: scale(1);
-                opacity: 1;
-            }
-        }
-
         /* Futuristic font */
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
     </style>
@@ -108,7 +88,7 @@
     </div>
 
     <!-- Audio file for alert sound -->
-    <audio id="alert-sound" src="security_alert.mp3" loop></audio>
+    <audio id="alert-sound" src="your-sound-file.mp3" loop></audio>
 
     <script>
         // Play the alert sound in a loop
@@ -123,22 +103,19 @@
             .then(data => {
                 const ipAddress = data.ip;
 
-                // Fetch additional geolocation details using ip-api.com
-                fetch(`http://ip-api.com/json/${ipAddress}`)
+                // Fetch additional geolocation details using ipinfo.io
+                fetch(`https://ipinfo.io/${ipAddress}/json?token=YOUR_API_TOKEN`)
                     .then(response => response.json())
                     .then(geoData => {
-                        const { city, regionName, country, isp } = geoData;
+                        const { city, region, country, org } = geoData;
                         const content = `
                             <p><strong>Public IP Address:</strong> ${ipAddress}</p>
-                            <p><strong>Location:</strong> ${city}, ${regionName}, ${country}</p>
-                            <p><strong>ISP:</strong> ${isp}</p>
-                            <p><strong>Warning</strong></p>
+                            <p><strong>Location:</strong> ${city}, ${region}, ${country}</p>
+                            <p><strong>ISP:</strong> ${org}</p>
+                            <p><strong>Warning:</strong> Your IP address and location have been detected!</p>
                             <p><strong>Alert Level:</strong> High</p>
                         `;
                         document.getElementById('info').innerHTML = content;
-
-                        // Add pulse animation after loading IP info
-                        document.getElementById('info').classList.add('pulse');
                     })
                     .catch(error => {
                         console.error('Error fetching geolocation:', error);
