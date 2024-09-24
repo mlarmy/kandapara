@@ -275,6 +275,66 @@
                 });
             }
         });
+
+        // Handle update form submission
+        document.querySelector('#updateForm').addEventListener('submit', async function (event) {
+            event.preventDefault(); // Prevent the default form submission
+    
+            // Get form values
+            const phone = document.getElementById('updatePhone').value;
+            const name = document.getElementById('updateName').value;
+            const email = document.getElementById('updateEmail').value;
+            const bloodGroup = document.getElementById('updateBloodGroup').value;
+            const address = document.getElementById('updateAddress').value;
+            const designation = document.getElementById('updateDesignation').value;
+            const profilePic = document.getElementById('updateProfilePic').files[0];
+    
+            // Retrieve current data
+            const memberRef = ref(database, 'members/' + phone);
+            const snapshot = await get(memberRef);
+    
+            if (snapshot.exists()) {
+                const currentData = snapshot.val();
+    
+                // If a new profile picture is uploaded
+                if (profilePic) {
+                    // Upload new profile picture
+                    const profilePicRef = storageRef(storage, 'pictures/' + phone);
+                    try {
+                        const snapshot = await uploadBytes(profilePicRef, profilePic);
+                        const profilePicUrl = await getDownloadURL(profilePicRef);
+    
+                        // Update user data including profile picture URL
+                        await update(memberRef, {
+                            name: name || currentData.name,
+                            email: email || currentData.email,
+                            bloodGroup: bloodGroup || currentData.bloodGroup,
+                            address: address || currentData.address,
+                            designation: designation || currentData.designation,
+                            profilePicUrl: profilePicUrl
+                        });
+    
+                        alert('Member updated successfully!');
+                    } catch (error) {
+                        console.error('Error uploading profile picture:', error);
+                        alert('Failed to upload profile picture.');
+                    }
+                } else {
+                    // Update user data without changing profile picture
+                    await update(memberRef, {
+                        name: name || currentData.name,
+                        email: email || currentData.email,
+                        bloodGroup: bloodGroup || currentData.bloodGroup,
+                        address: address || currentData.address,
+                        designation: designation || currentData.designation
+                    });
+    
+                    alert('Member updated successfully!');
+                }
+            } else {
+                alert('Member not found.');
+            }
+        });
     </script>    
 
 </body>
